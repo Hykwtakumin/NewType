@@ -1,0 +1,64 @@
+
+const socket = io.connect('http://linda-server.herokuapp.com:80');
+const linda = new Linda().connect(socket);
+const tupleSpace = linda.tuplespace('masuilab');
+
+linda.io.on('connect', function(){
+
+    console.dir('socket.io connect!!');
+
+    tupleSpace.watch({type:"Slack"}, function(err, tuple){
+        if (err) {
+            console.dir(err)
+        } else {
+            receiveFromLinda(tuple)
+            // console.dir(tuple)
+            // console.log(tuple.from)
+            // console.log("> " + tuple.data.newType + " (from:" + tuple.data.user + ")");
+        }
+    });
+
+});
+
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.message === "sendToLinda") {
+        sendToLinda(request);
+    }
+});
+
+function sendToLinda(request) {
+    const channelName = request.data.channel;
+    const userName = request.data.name;
+    const text = request.data.text;
+
+    const newTypeTuple = {
+        type: "Slack",
+        channel : channelName,
+        user: userName,
+        newType: text
+    };
+
+    tupleSpace.write(newTypeTuple)
+}
+
+function receiveFromLinda(tuple) {
+    const channel = tuple.data.channel;
+    const userName = tuple.data.user;
+    const newType = tuple.data.newType;
+
+    const queryInfo = {
+        active: true,
+        windowId: chrome.windows.WINDOW_ID_CURRENT
+    };
+
+    chrome.tabs.query(queryInfo, function (result) {
+        const currentTab = result.shift();
+
+        const receivedNewType = { name : userName, channel: channel, text: newType };
+        const sendData = { message: "receiveFromLinda", data : receivedNewType};
+
+        chrome.tabs.sendMessage(currentTab.id, sendData, function() {});
+    })
+
+}

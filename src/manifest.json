@@ -1,0 +1,38 @@
+{
+  "name": "NewType",
+  "version": "0.1",
+  "description": "Visualize others new typing on Slack",
+  "icons" : {
+    "48":"icons/icon.png"
+  },
+  "browser_action": {
+    "48": "icons/icon.png"
+  },
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage",
+    "cookies",
+    "clipboardWrite",
+    "contextMenus"
+  ],
+  "content_scripts": [
+    {
+      "matches" : [ "https://*.slack.com/*"],
+      "js": [
+        "content.js"
+      ],
+      "run_at" : "document_idle"
+    }
+  ],
+  "background": {
+    "scripts": [
+      "libs/socket.io.js",
+      "libs/linda.js",
+      "background.js"
+    ],
+    "persistent": true
+  },
+  "web_accessible_resources": ["https://linda-server.herokuapp.com/*", "libs/socket.io.js", "libs/linda.js"],
+  "manifest_version": 2
+}
