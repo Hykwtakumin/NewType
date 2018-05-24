@@ -32,21 +32,6 @@ const observer = new MutationObserver(records => {
 
             if (record.addedNodes != null && record.addedNodes.length !== 0) {
                 console.log("他のユーザーの入力イベントが開始された");
-                //他のユーザーの入力イベントが開始された場合
-                //入力しているユーザーを取り出す
-                const typingUserArray = [];
-                record.addedNodes.forEach(item => {
-                    if (item.className === "typing_name") {
-                        console.log("DOM GOT!");
-                        const user = item.innerText;
-                        console.dir(user);
-                    }
-                });
-
-                if (typingUserArray != null && typingUserArray.length !== 0) {
-                    appendNewType(typingUserArray);
-                }
-
             } else if (record.removedNodes != null && record.removedNodes.length !== 0) {
                 //入力イベントが途切れた場合
                 console.log("入力イベントが途切れた");
@@ -65,14 +50,7 @@ chrome.runtime.onMessage.addListener( (message, sender, sendResponse) => {
         //現在開いているチャンネルと同じチャンネルからのNewTypeのみ表示
         const currentChannel = document.getElementById("channel_title").innerText;
         if (currentChannel != null && currentChannel === message.data.channel) {
-            console.dir(message.data);
-            const array = [message.data.text];
-            appendNewType(array);
-            // if (message.data.name === user) {
-            //     const newTypeLine = user + " is typing : " + message.data.text + "\n";
-            //     typingUserArray.push(newTypeLine);
-            //     //ここはroopと関係なく見ていた方が良さそう
-            // }
+            appendNewType(message.data);
         }
     }
 } );
@@ -80,39 +58,72 @@ chrome.runtime.onMessage.addListener( (message, sender, sendResponse) => {
 //recordsで新規に入力を開始した人を追加
 //単一のDOMを追加する
 //appendChildするDOMと流し込むデータの配列を引数にとる
-function appendNewType (newTypeArray) {
-    const newRect = document.querySelector(".newTypeDOM");
-    if (newRect != null) {
-        newRect.innerHTML = null; //reset
-        newTypeArray.forEach(item => {
-            const newLine = document.createElement("span");
-            newLine.innerText = item;
-            newRect.appendChild(item);
-        })
-    } else {
-        const newRect = document.createElement("div");
-        const parent =  document.getElementById("typing_text");
-        newRect.className = "newTypeDOM";
-        newRect.style.zIndex = "2147483647";
-        newRect.style.position = "relative";
-        newRect.style.color = "#717274";
-        newRect.style.fontSize = ".7em";
-        newRect.style.lineHeight = "1rem";
-        parent.appendChild(newRect);
+function appendNewType (data) {
+    let newRect = document.querySelector(".newTypeDOM");
+    const parent =  document.getElementById("footer_msgs");
+    const channelName = document.getElementById("channel_title").innerText;
 
-        newTypeArray.forEach(item => {
-            const newLine = document.createElement("span");
-            newLine.innerText = item;
-            newRect.appendChild(item);
-        })
+    if (channelName === data.channel) {
+        if (newRect != null) {
+            console.log("newRect is already add");
+            const textLine = `${data.name} : ${data.text}`;
+            addTextline(newRect, data.name, textLine);
+        } else {
+            const newRect = document.createElement("div");
+
+            newRect.className = "newTypeDOM";
+            newRect.style.zIndex = "2147483647";
+            newRect.style.position = "relative";
+            newRect.style.paddingLeft = "30px";
+            // newRect.style.paddingBottom = "5px";
+            newRect.style.color = "#717274";
+            newRect.style.fontSize = ".7em";
+            newRect.style.lineHeight = "1rem";
+            parent.appendChild(newRect);
+            // newRect.innerText = message;
+            const textLine = `${data.name} : ${data.text}`;
+            addTextline(newRect, data.name, textLine);
+            console.log("add newRect");
+        }
+    } else {
+        console.log("current channel has no newType")
+    }
+}
+
+//同名のユーザーで新しいテキストがあれば上書き
+//違うユーザーならばspan要素を新規作成する
+function addTextline(rect, user, text) {
+    const userName = document.getElementById("team_menu_user_name").innerText;
+    if (user !== userName) {
+
+        let  userLine = document.getElementById(`${user}`);
+
+        if (userLine != null) {
+            //ユーザーが既に存在する場合
+            console.log("new user add");
+            userLine.innerText = text;
+        } else {
+            //新規ユーザーの場合
+            console.log("new user add");
+            const newLine = document.createElement("p");
+            newLine.id = `${user}`;
+            newLine.className = "newTypeDOM";
+            newLine.innerText = text;
+            rect.appendChild(newLine);
+        }
+    } else {
+        console.log("user is user")
     }
 }
 
 //recordsからremoveされた人を削除
 function removeNewType () {
     const newRect = document.querySelector(".newTypeDOM");
+
     if (newRect != null) {
-        document.body.removeChild(newRect);
+        newRect.remove()
+    } else {
+        console.log("newRect is null")
     }
 }
 

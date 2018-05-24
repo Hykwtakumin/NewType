@@ -61,4 +61,8 @@ typings/
 .next
 
 dist
-idea
+/.idea/
+/tmp/
+/bin/
+*.test
+*.swp
