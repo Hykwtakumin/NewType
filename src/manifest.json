@@ -1,6 +1,6 @@
 {
   "name": "NewType",
-  "version": "0.1",
+  "version": "0.2",
   "description": "Visualize others new typing on Slack",
   "icons" : {
     "48":"icons/icon.png"
