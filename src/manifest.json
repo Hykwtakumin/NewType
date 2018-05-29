@@ -1,6 +1,6 @@
 {
   "name": "NewType",
-  "version": "0.2",
+  "version": "0.2.0",
   "description": "Visualize others new typing on Slack",
   "icons" : {
     "48":"icons/icon.png"
@@ -14,7 +14,8 @@
     "storage",
     "cookies",
     "clipboardWrite",
-    "contextMenus"
+    "contextMenus",
+    "notifications"
   ],
   "content_scripts": [
     {

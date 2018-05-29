@@ -20,6 +20,25 @@ linda.io.on('connect', function(){
 
 });
 
+const notifIcon = chrome.runtime.getURL('/icons/icon.png')
+
+function notificate (message) {
+
+    const notifOption = {
+        type: "basic",
+        title: "Temp-BookMarker",
+        message: `ページが登録されました! : ${message}`,
+        iconUrl: notifIcon
+    };
+
+    chrome.notifications.getPermissionLevel(function (level) {
+        if (level === "granted") {
+            chrome.notifications.create(notifOption);
+        } else if (level === "denied") {
+            console.log("User has elected not to show notifications from the app or extension.")
+        }
+    })
+}
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.message === "sendToLinda") {

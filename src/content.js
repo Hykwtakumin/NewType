@@ -122,6 +122,7 @@ function removeNewType () {
 
     if (newRect != null) {
         newRect.remove()
+        notificate("removeNewType")
     } else {
         console.log("newRect is null")
     }
