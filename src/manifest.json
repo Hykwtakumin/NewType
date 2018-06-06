@@ -21,19 +21,17 @@
     {
       "matches" : [ "https://*.slack.com/*"],
       "js": [
-        "content.js"
+        "scripts/content.js"
       ],
       "run_at" : "document_idle"
     }
   ],
   "background": {
     "scripts": [
-      "libs/socket.io.js",
-      "libs/linda.js",
-      "background.js"
+      "scripts/background.js"
     ],
     "persistent": true
   },
-  "web_accessible_resources": ["https://linda-server.herokuapp.com/*", "libs/socket.io.js", "libs/linda.js"],
+  "web_accessible_resources": ["https://linda-server.herokuapp.com/*"],
   "manifest_version": 2
 }

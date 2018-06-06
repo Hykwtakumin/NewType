@@ -14,6 +14,7 @@ const timeLineItem = document.getElementsByClassName("c-virtual_list__item");
 
 const observer = new MutationObserver(records => {
     records.forEach(record => {
+        let targetDOM = record.target as HTMLElement;
         if (record.type === "characterData") {
             //ユーザーの入力中の文字列を取得する
             const userName = document.getElementById("team_menu_user_name").innerText;
@@ -28,7 +29,7 @@ const observer = new MutationObserver(records => {
 
             console.dir(record)
 
-        } else if (record.target.className === "overflow_ellipsis") {
+        } else if (targetDOM.className === "overflow_ellipsis") {
 
             if (record.addedNodes != null && record.addedNodes.length !== 0) {
                 console.log("他のユーザーの入力イベントが開始された");
@@ -121,8 +122,8 @@ function removeNewType () {
     const newRect = document.querySelector(".newTypeDOM");
 
     if (newRect != null) {
-        newRect.remove()
-        notificate("removeNewType")
+        newRect.remove();
+        // notificate("removeNewType")
     } else {
         console.log("newRect is null")
     }

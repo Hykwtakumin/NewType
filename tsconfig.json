@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2015",
+    "sourceMap": true,
+    "outDir": "dist/scripts",
+    "jsx": "react"
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "src/scripts/*.ts",
+    "src/scripts/*.tsx"
+  ]
+}

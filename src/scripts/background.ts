@@ -1,6 +1,9 @@
 
-const socket = io.connect('http://linda-server.herokuapp.com:80');
-const linda = new Linda().connect(socket);
+import * as Linda from "linda"
+import * as socketIO from  "socket.io-client"
+const LindaClient = Linda.Client;
+const socket = socketIO.connect('http://linda-server.herokuapp.com');
+const linda = new LindaClient().connect(socket);
 const tupleSpace = linda.tuplespace('masuilab');
 
 linda.io.on('connect', function(){
@@ -12,15 +15,12 @@ linda.io.on('connect', function(){
             console.dir(err)
         } else {
             receiveFromLinda(tuple)
-            // console.dir(tuple)
-            // console.log(tuple.from)
-            // console.log("> " + tuple.data.newType + " (from:" + tuple.data.user + ")");
         }
     });
 
 });
 
-const notifIcon = chrome.runtime.getURL('/icons/icon.png')
+const notifIcon = chrome.runtime.getURL('/icons/icon.png');
 
 function notificate (message) {
 
