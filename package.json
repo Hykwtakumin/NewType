@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf packages/* tmp/* dist/*",
-    "build": "yarn clean && ./node_modules/.bin/webpack --config webpack.config.js",
-    "build_ts": "npm run clean && ./node_modules/.bin/tsc",
+    "build": "yarn run clean && yarn run pack && yarn run tsc && yarn run browserify",
+    "tsc": "./node_modules/.bin/tsc",
     "browserify": "./node_modules/.bin/browserify -e ./dist/scripts/background.js -o ./dist/scripts/background.js",
     "pack": "cp ./src/manifest.json ./dist && cp -r ./src/pages ./dist/pages && cp -r ./src/icons ./dist/icons",
     "watch": "yarn build -- --watch",
@@ -17,34 +17,17 @@
   "author": "hykwtakumin <hykwtakumin@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "bufferutil": "^3.0.5",
     "linda": "^1.2.2",
-    "socket.io-client": "^2.1.1"
+    "socket.io-client": "^2.1.0",
+    "utf-8-validate": "^4.0.2",
+    "uws": "~9.14.0"
   },
   "devDependencies": {
     "@types/chrome": "0.0.65",
     "@types/socket.io-client": "^1.4.32",
     "ava": "^0.25.0",
-    "babel-core": "^6.24.1",
-    "babel-loader": "^6.4.1",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.24.1",
     "browserify": "^16.2.2",
-    "chrome-browser-object-polyfill": "^0.2.2",
-    "copy-webpack-plugin": "^4.5.1",
-    "on-build-webpack": "^0.1.0",
-    "ts-loader": "^4.3.1",
-    "typescript": "^2.8.4",
-    "webpack": "^2.3.3"
-  },
-  "standard": {
-    "globals": [
-      "chrome"
-    ]
-  },
-  "babel": {
-    "presets": [
-      "env"
-    ]
+    "typescript": "^2.9.1"
   }
 }
