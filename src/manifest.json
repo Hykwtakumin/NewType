@@ -1,6 +1,6 @@
 {
   "name": "NewType",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Visualize others new typing on Slack",
   "icons" : {
     "48":"icons/icon.png"
@@ -28,10 +28,12 @@
   ],
   "background": {
     "scripts": [
+      "libs/socket.io.js",
+      "libs/linda.js",
       "scripts/background.js"
     ],
     "persistent": true
   },
-  "web_accessible_resources": ["https://linda-server.herokuapp.com/*"],
+  "web_accessible_resources": ["https://linda-server.herokuapp.com/*","libs/socket.io.js", "libs/linda.js"],
   "manifest_version": 2
 }

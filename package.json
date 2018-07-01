@@ -8,7 +8,7 @@
     "build": "yarn run clean && yarn run pack && yarn run tsc && yarn run browserify",
     "tsc": "./node_modules/.bin/tsc",
     "browserify": "./node_modules/.bin/browserify -e ./dist/scripts/background.js -o ./dist/scripts/background.js",
-    "pack": "cp ./src/manifest.json ./dist && cp -r ./src/pages ./dist/pages && cp -r ./src/icons ./dist/icons",
+    "pack": "cp ./src/manifest.json ./dist && cp -r ./src/libs ./dist/libs && cp -r ./src/pages ./dist/pages && cp -r ./src/icons ./dist/icons",
     "watch": "yarn build -- --watch",
     "test": "./node_modules/.bin/run-p test:**",
     "test:ava": "./node_modules/.bin/ava",

@@ -1,6 +1,6 @@
 
 const textArea = document.getElementById("msg_input");
-const typingText = document.getElementById("typing_text");
+const typingText = document.getElementById("notification_bar");
 
 const observeOption = {
     childList: true,

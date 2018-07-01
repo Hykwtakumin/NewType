@@ -1,20 +1,26 @@
-import * as socketIO from  "socket.io-client"
-import * as Linda from  "linda/lib/linda.js"
-const socket = socketIO.connect('http://linda-server.herokuapp.com');
+// import * as socketIO from  "socket.io-client"
+// import * as Linda from  "linda/lib/linda.js"
+// const socket = socketIO.connect('http://linda-server.herokuapp.com');
+// // const linda = new LindaClient().connect(socket);
+// // const tupleSpace = new LindaClient().tuplespace('masuilab');
+// const LindaClient = Linda.Client;
+// import tuplespace from 'linda/lib/tuplespace.js'
 // const linda = new LindaClient().connect(socket);
-// const tupleSpace = new LindaClient().tuplespace('masuilab');
-const LindaClient = Linda.Client;
-import tuplespace from 'linda/lib/tuplespace.js'
-const linda = new LindaClient().connect(socket);
-const ts = linda.tuplespace("masuilab");
-// .tuplespace("masuilab");
+// const ts = linda.tuplespace("masuilab");
+// // .tuplespace("masuilab");
+
+declare var Linda: any;
+
+const socket = io.connect('http://linda-server.herokuapp.com:80');
+const linda = new Linda().connect(socket);
+const tupleSpace = linda.tuplespace('masuilab');
 
 
 linda.io.on('connect', function(){
 
     console.dir('socket.io connect!!');
 
-    ts.watch({type:"Slack"}, function(err, tuple){
+    tupleSpace.watch({type:"Slack"}, function(err, tuple){
         if (err) {
             console.dir(err)
         } else {
@@ -62,7 +68,7 @@ function sendToLinda(request) {
         newType: text
     };
 
-    ts.write(newTypeTuple)
+    tupleSpace.write(newTypeTuple)
 }
 
 function receiveFromLinda(tuple) {
